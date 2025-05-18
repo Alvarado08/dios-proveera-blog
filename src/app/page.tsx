@@ -1,33 +1,37 @@
-import Link from "next/link";
-import { type SanityDocument } from "next-sanity";
-import { client } from "@/lib/client";
-import { Card } from "@/components/ui/card";
+import BlogWrapper from "./components/BlogWrapper";
+import { CarouselDemo } from "./components/Carousel";
+import { BackgroundLinesDemo } from "./components/CTA";
+import { FlipWordsDemo } from "./components/FlipWords";
+import { GlowingEffectDemo } from "./components/Glowing";
+import { AnimatedTestimonialsDemo } from "./components/InfoCards";
+import { Suspense } from "react";
 
-export const revalidate = 30;
-
-const POSTS_QUERY = `*[
-  _type == "blog"
-  && defined(slug.current)
-]|order(publishedAt desc)[0...12]{_id, title, slug, publishedAt, description}`;
-
-export default async function Home() {
-  const posts = await client.fetch<SanityDocument[]>(POSTS_QUERY, {});
-
+export default function Home() {
   return (
-    <div>
-      <div className="grid md:grid-cols-2 gap-4">
-        {posts.map((post) => (
-          <Card className="p-4" key={post._id}>
-            <Link href={`/${post.slug.current}`}>
-              <div className="flex justify-between">
-                <h2 className="text-xl font-semibold">{post.title}</h2>
-                <h6>{new Date(post.publishedAt).toLocaleDateString()}</h6>
-              </div>
-              <p className="mt-2">{post.description}</p>
-            </Link>
-          </Card>
-        ))}
-      </div>
+    <div className="container mx-auto px-8 py-20 space-y-12">
+      <section>
+        <CarouselDemo />
+      </section>
+      <section>
+        <FlipWordsDemo />
+      </section>
+      <section id="nosotros">
+        <h1 className="mb-10 md:mb-20 text-3xl md:text-4xl lg:text-5xl font-bold font-sans">
+          Sobre nosotros
+        </h1>
+        <div className="space-y-12">
+          <GlowingEffectDemo />
+          <AnimatedTestimonialsDemo />
+        </div>
+      </section>
+      <section id="noticias">
+        <Suspense fallback={<div>Cargando noticias...</div>}>
+          <BlogWrapper />
+        </Suspense>
+      </section>
+      <section id="oracion">
+        <BackgroundLinesDemo />
+      </section>
     </div>
   );
 }

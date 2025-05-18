@@ -3,6 +3,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { client } from "@/lib/client";
 import Link from "next/link";
+import Image from "next/image";
 
 export const revalidate = 30;
 
@@ -24,20 +25,29 @@ export default async function PostPage({
     : null;
 
   return (
-    <main className="mx-auto min-h-screen max-w-4xl flex flex-col gap-4">
-      <Link href="/" className="hover:underline">
+    <main className="mx-auto py-20 md:py-24 flex flex-col gap-4">
+      <Link href="/blog" className="hover:underline">
         ← Back to posts
       </Link>
       <h1 className="text-4xl font-bold mb-8">{post.title}</h1>
       <p>Publicado: {new Date(post.publishedAt).toLocaleDateString()}</p>
       {postImageUrl && (
-        <img
+        <Image
           src={postImageUrl}
           alt={post.title}
           className="aspect-video rounded-xl self-center"
-          width="650"
-          height="430"
+          width={650}
+          height={430}
+          quality={100}
+          priority={true}
         />
+        // <img
+        //   src={postImageUrl}
+        //   alt={post.title}
+        //   className="aspect-video rounded-xl self-center"
+        //   width="650"
+        //   height="430"
+        // />
       )}
       <div className="max-w-none prose prose-xl dark:prose-invert">
         {Array.isArray(post.body) && <PortableText value={post.body} />}

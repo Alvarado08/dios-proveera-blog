@@ -9,9 +9,11 @@ export default function NavBar() {
       <Link href="/">
         <Image
           src={logo}
-          width={100}
-          height={100}
+          width={60}
+          height={60}
           alt="Iglesia Dios Proveera Logo"
+          priority
+          style={{ width: "auto", height: "auto" }}
         />
       </Link>
       <ModeToggle />
