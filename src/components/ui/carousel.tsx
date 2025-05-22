@@ -21,7 +21,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
 
   const xRef = useRef(0);
   const yRef = useRef(0);
-  const frameRef = useRef<number>();
+  const frameRef = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const animate = () => {
@@ -91,7 +91,20 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
                 : "none",
           }}
         >
-          <img
+          <Image
+            src={src}
+            alt={title}
+            style={{
+              opacity: current === index ? 1 : 0.5,
+            }}
+            width={1000}
+            height={1000}
+            onLoad={imageLoaded}
+            loading="eager"
+            decoding="sync"
+            className="absolute inset-0 w-[120%] h-[120%] object-cover opacity-100 transition-opacity duration-600 ease-in-out"
+          />
+          {/* <img
             className="absolute inset-0 w-[120%] h-[120%] object-cover opacity-100 transition-opacity duration-600 ease-in-out"
             style={{
               opacity: current === index ? 1 : 0.5,
@@ -101,7 +114,7 @@ const Slide = ({ slide, index, current, handleSlideClick }: SlideProps) => {
             onLoad={imageLoaded}
             loading="eager"
             decoding="sync"
-          />
+          /> */}
           {current === index && (
             <div className="absolute inset-0 bg-black/30 transition-all duration-1000" />
           )}
